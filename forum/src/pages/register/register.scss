@@ -1,0 +1,57 @@
+.register{
+    height: 100vh;
+    background-color: rgb(193,190,255);
+    //overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .card{
+        display: flex;
+        width: 50%;
+        max-width: 700px;
+        background-color: white;
+        align-items: center;
+        justify-content: center;
+        overflow: scroll;
+        border-radius: 10px;
+        max-height: 100vh;
+        .mid{
+            display: flex;
+            padding: 50px;
+            flex-direction: column;
+            gap: 50px;
+            width: 400px;
+            justify-content: center;
+            align-items: center;
+            h1{
+                color: #555;
+            }
+            form{
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+                width: 100%;
+                align-items: center;
+                input{
+                    border: none;
+                    border-bottom: 1px solid lightgray;
+                    padding: 20px 10px;
+                    width: 80%;
+                }
+                button{
+                    width: 50%;
+                    padding: 10px;
+                    border: none;
+                    background-color: #938eef;
+                    color: white;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+            }
+            a{
+                color: #0000EE;
+            }
+
+        }
+    }
+}
