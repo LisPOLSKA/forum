@@ -1,5 +1,5 @@
 .register{
-    height: 100vh;
+    height: 100dvh;
     background-color: rgb(193,190,255);
     //overflow: hidden;
     display: flex;
@@ -23,6 +23,8 @@
             width: 400px;
             justify-content: center;
             align-items: center;
+            //overflow: scroll;
+            
             h1{
                 color: #555;
             }
@@ -48,7 +50,7 @@
                     cursor: pointer;
                 }
             }
-            a{
+            span{
                 color: #0000EE;
             }
 

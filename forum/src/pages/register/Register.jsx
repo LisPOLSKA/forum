@@ -15,7 +15,7 @@ const Register = () => {
             <button>Zarejstruj</button>
           </form>
           <Link to="/login">
-            <a>Strona logowania</a>
+            <span>Strona logowania</span>
           </Link>
         </div>
       </div>
