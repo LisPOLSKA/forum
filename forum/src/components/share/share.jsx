@@ -49,7 +49,7 @@ const Share = () => {
                 <div className="top">
                     <div className="left">
                         <img
-                            src={currentUser.profilePic}
+                            src={"/upload/"+currentUser.profilePic}
                             alt=""
                         />
                         <textarea placeholder={`Co chcesz przekazać ${currentUser.username}?`} onChange={e=>setDesc(e.target.value)} value={desc}/>

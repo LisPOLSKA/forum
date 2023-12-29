@@ -3,7 +3,7 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
-import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Link } from "react-router-dom";
 import Comments from "../comments/Comments";
 import { useContext, useState } from "react";
@@ -14,6 +14,7 @@ import { AuthContext } from "../../context/authContext";
 
 const Post = ({post}) => {
     const [commentOpen, setCommentOpen] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
 
     const {currentUser} = useContext(AuthContext);
 
@@ -34,8 +35,20 @@ const Post = ({post}) => {
         },
     });
 
+    const deleteMutation = useMutation((postId)=>{
+        return makeRequest.delete("/posts/"+postId);
+    },{
+        onSuccess: () => {
+            queryClient.invalidateQueries(["posts"]);
+        },
+    });
+
     const handleLike = ()=>{
         mutation.mutate(data.includes(currentUser.id));
+    };
+
+    const handleDelete = () => {
+        deleteMutation.mutate(post.id);
     };
 
   return(
@@ -43,7 +56,7 @@ const Post = ({post}) => {
         <div className="container">
             <div className="user">
                 <div className="userInfo">
-                    <img src={post.profilePic} alt="" />
+                    <img src={"/upload/"+post.profilePic} alt="" />
                     <div className="details">
                         <Link to={`/profile/${post.userId}`} style={{textDecoration:"none", color:"inherit"}}>
                             <span className="name">{post.username}</span>
@@ -51,7 +64,8 @@ const Post = ({post}) => {
                         <span className="date">{moment(post.createdAt).fromNow()}</span>
                     </div>
                 </div>
-                <MoreHorizOutlinedIcon/>
+                <MoreHorizIcon onClick={()=>setMenuOpen(!menuOpen)}/>
+                {menuOpen && post.userId === currentUser.id && (<button onClick={handleDelete}>delete</button>) }
             </div>
             <div className="content">
                 <p>{post.desc}</p>
