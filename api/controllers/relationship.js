@@ -45,3 +45,12 @@ export const deleteRelationship = (req,res) =>{
     });
     });
 };
+
+export const getSuggestions = (req, res) =>{
+    const q = `SELECT DISTINCT u.id, u.username, u.profilePic FROM users AS u JOIN relationships AS r1 ON u.id = r1.userId2 JOIN relationships AS r2 ON r1.userId1 = r2.userId2 LEFT JOIN relationships AS r ON (u.id = r.userId1 OR u.id = r.userId2) AND (r.userId1 = ? OR r.userId2 = ?) WHERE (r1.userId1 = ? OR r2.userId1 = ?) AND r.id IS NULL AND u.id != ? AND r1.status = 'accept' AND r2.status = 'accept'`;
+
+    db.query(q, [req.query.userId, req.query.userId, req.query.userId, req.query.userId, req.query.userId], (err, data)=>{
+        if (err) return res.status(500).json(err);
+        return res.status(200).json(data);
+    });
+};
