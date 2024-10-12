@@ -1,9 +1,9 @@
 import "./stories.scss"
 import { useContext } from "react";
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/AuthContext";
 
 const Stories = () => {
-    const {currentUser} = useContext(AuthContext);
+  const { currentUser } = useAuth();
     //TEMPORARY
   const stories = [
     {
@@ -30,7 +30,12 @@ const Stories = () => {
   return (
     <div className="stories">
         <div className="story">
-            <img src={"/upload/"+currentUser.profilePic} alt="" />
+            <img 
+              src={currentUser?.photoURL} // URL do zdjęcia profilowego (jeśli nie ma, to default)
+              alt="profilePic"
+              className="profilePic"
+              referrerpolicy="no-referrer"
+            />
             <span>{currentUser.name}</span>
             <button>+</button>
         </div>

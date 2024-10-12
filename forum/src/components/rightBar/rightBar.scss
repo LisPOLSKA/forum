@@ -7,6 +7,7 @@
         top: 70px;
         height: calc(100vh - 70px);
         overflow: scroll;
+        overflow-x: hidden;
         background-color: themed("bgSoft");
         @include mobile{
             display: none;
@@ -76,6 +77,25 @@
                             &:only-child{
                                 background-color: #5271ff;
                             }
+                        }
+                    }
+                }
+            }
+            .item#invites{
+                .user{
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                    row-gap: 20px;
+                    .buttons{
+                        button{
+                            color: white;
+                        }
+                        :first-child{
+                            background-color: green;
+                        }
+                        :nth-child(2){
+                            background-color: red;
                         }
                     }
                 }

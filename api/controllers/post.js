@@ -1,72 +1,81 @@
 import moment from "moment";
 import { db } from "../connect.js";
-import jwt from "jsonwebtoken";
 
-export const getPosts = (req,res) =>{
-    const userId = req.query.userId;
-    const token = req.cookies.accessToken;
-    if(!token) return res.status(401).json("Not logged in!")
+export const getPosts = (req, res) => {
+    const userId = req.user.uid; // Pobierane z Firebase Authentication
+    const { friends, userId: requestedUserId } = req.query; // Pobieranie zapytań
 
-    jwt.verify(token, "secretkey", (err, userInfo)=>{
-        if(err) return res.status(403).json("Token is not valid!")
+    let q;
+    let values;
 
-        const q = userId !== "undefined" ? `SELECT p.*, u.id AS userId, username, profilePic FROM posts AS p JOIN users AS u ON(u.id=p.userId) WHERE p.userId = ? ORDER BY createdAt DESC` :`SELECT p.*, u.id AS userId, username, profilePic
-        FROM posts AS p INNER JOIN users AS u ON(u.id=p.userId)
-        WHERE p.userId = ? OR p.userId IN (
-            SELECT CASE
-                WHEN r.userId1 = ? THEN r.userId2
-                ELSE r.userId1
-            END AS friend_id
-            FROM relationships AS r
-            WHERE r.userId1 = ? OR r.userId2 = ?
-        )
-        ORDER BY p.createdAt DESC`;
+    if (requestedUserId) {
+        // Gdy podano userId, pobierz posty tylko dla tego użytkownika
+        q = `
+            SELECT p.desc, p.id, p.img, p.category, p.userId
+            FROM posts p
+            WHERE p.userId = ?
+        `;
+        values = [requestedUserId];
+    } else if (friends) {
+        // Zapytanie do pobrania postów od znajomych
+        q = `
+            SELECT p.desc, p.id, p.img, p.category, p.userId
+            FROM posts p
+            JOIN relationships r ON (p.userId = r.userId1 OR p.userId = r.userId2)
+            WHERE (r.userId1 = ? OR r.userId2 = ?)
+            AND r.status = 'accept'
+            AND p.userId != ?
+        `;
+        values = [userId, userId, userId];
+    } else {
+        // Gdy nie podano userId ani friends, można zwrócić wszystkie posty (lub dostosować zgodnie z wymaganiami)
+        q = `
+            SELECT p.desc, p.id, p.img, p.category, p.userId
+            FROM posts p
+            WHERE p.userId = ?
+        `;
+        values = [userId];
+    }
 
-        const values =userId!== "undefined" ? [userId] : [userInfo.id, userInfo.id, userInfo.id, userInfo.id]
-
-    db.query(q, values, (err, data)=>{
+    db.query(q, values, (err, data) => {
         if (err) return res.status(500).json(err);
         return res.status(200).json(data);
     });
+};
+
+export const addPost = (req, res) => {
+    const userId = req.user.uid;
+    const img = req.body.img;
+
+    console.log("Image URL received in backend:", img); // Logowanie otrzymanej wartości img
+
+    const q = "INSERT INTO posts (`desc`,`img`,`createdAt`,`userId`,`category`) VALUES (?)";
+    const values = [
+        req.body.desc,
+        img,  // Wartość otrzymana z frontendu
+        moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+        userId,
+        `testowy`
+    ];
+
+    console.log("Values being inserted:", values); // Logowanie wartości przed zapytaniem SQL
+
+    db.query(q, [values], (err, data) => {
+        if (err) {
+            console.error("Error while adding post:", err);
+            return res.status(500).json(err);
+        }
+        return res.status(200).json("Post has been created");
     });
 };
 
-export const addPost = (req,res) =>{
-    const token = req.cookies.accessToken;
-    if(!token) return res.status(401).json("Not logged in!")
+export const deletePost = (req, res) => {
+    const userId = req.user.uid;  // Użycie Firebase userId
 
-    jwt.verify(token, "secretkey", (err, userInfo)=>{
-        if(err) return res.status(403).json("Token is not valid!")
-
-        const q = "INSERT INTO posts (`desc`,`img`,`createdAt`,`userId`,`category`) VALUES (?)"
-        const values = [
-            req.body.desc,
-            req.body.img,
-            moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
-            userInfo.id,
-            `testowy`
-        ]
-
-    db.query(q, [values], (err, data)=>{
+    const q = "DELETE FROM posts WHERE `id` = ? AND `userId` = ?";
+    db.query(q, [req.params.id, userId], (err, data) => {
         if (err) return res.status(500).json(err);
-        return res.status(200).json("Post has been created");
+        if (data.affectedRows > 0) return res.status(200).json("Post has been deleted.");
+        return res.status(403).json("Możesz usunąć tylko swoje posty!");
     });
-    })
-}
-
-export const deletePost = (req,res) =>{
-    const token = req.cookies.accessToken;
-    if(!token) return res.status(401).json("Not logged in!")
-
-    jwt.verify(token, "secretkey", (err, userInfo)=>{
-        if(err) return res.status(403).json("Token is not valid!")
-
-        const q = "DELETE FROM posts WHERE `id` = ? AND `userId` = ?"
-
-    db.query(q, [req.params.id, userInfo.id], (err, data)=>{
-        if (err) return res.status(500).json(err);
-        if(data.affectedRows>0) return res.status(200).json("Post has been deleted.");
-        return res.status(403).json("Możesz usunąc tylko swoje posty!");
-    });
-    })
-}
+};

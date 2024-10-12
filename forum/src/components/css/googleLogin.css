@@ -1,0 +1,12 @@
+button {
+  background-color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  size: 25px;
+  font-size: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+}/*# sourceMappingURL=googleLogin.css.map */

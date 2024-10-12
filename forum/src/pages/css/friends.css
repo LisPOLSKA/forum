@@ -1,0 +1,194 @@
+.theme-light .friends {
+  background-color: #f6f3f3;
+  padding: 20px 70px;
+  min-height: 100vh;
+}
+@media (max-width: 480px) {
+  .theme-light .friends {
+    padding: 10px;
+  }
+}
+@media (max-width: 960px) {
+  .theme-light .friends {
+    padding: 20px;
+  }
+}
+.theme-light .friends .user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+.theme-light .friends .user .userInfo {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+  position: relative;
+  flex-direction: column;
+}
+.theme-light .friends .user .userInfo img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.theme-light .friends .user .userInfo .online {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: limegreen;
+  position: absolute;
+  top: 0;
+  left: 30px;
+}
+.theme-light .friends .user .userInfo p {
+  color: #555;
+}
+.theme-light .friends .user .userInfo span {
+  font-weight: 500;
+  color: #000;
+}
+.theme-light .friends .user .buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.theme-light .friends .user .buttons button {
+  border: none;
+  padding: 5px;
+  color: white;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.theme-light .friends .user .buttons button:only-child {
+  background-color: #5271ff;
+}
+.theme-light .friends .invites {
+  height: 200px;
+  display: flex;
+  justify-content: space-around;
+  width: auto;
+  flex-wrap: wrap;
+  flex-direction: column;
+  overflow-x: scroll;
+}
+.theme-light .friends .invites .invite {
+  width: 140px;
+}
+.theme-light .friends .invites .invite .user {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  row-gap: 20px;
+  flex-direction: column;
+}
+.theme-light .friends .invites .invite .user .buttons {
+  flex-direction: column;
+}
+.theme-light .friends .invites .invite .user .buttons button {
+  color: white;
+}
+.theme-light .friends .invites .invite .user .buttons :first-child {
+  background-color: green;
+}
+.theme-light .friends .invites .invite .user .buttons :nth-child(2) {
+  background-color: red;
+}
+.theme-dark .friends {
+  background-color: #333;
+  padding: 20px 70px;
+  min-height: 100vh;
+}
+@media (max-width: 480px) {
+  .theme-dark .friends {
+    padding: 10px;
+  }
+}
+@media (max-width: 960px) {
+  .theme-dark .friends {
+    padding: 20px;
+  }
+}
+.theme-dark .friends .user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+.theme-dark .friends .user .userInfo {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+  position: relative;
+  flex-direction: column;
+}
+.theme-dark .friends .user .userInfo img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.theme-dark .friends .user .userInfo .online {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: limegreen;
+  position: absolute;
+  top: 0;
+  left: 30px;
+}
+.theme-dark .friends .user .userInfo p {
+  color: lightgray;
+}
+.theme-dark .friends .user .userInfo span {
+  font-weight: 500;
+  color: whitesmoke;
+}
+.theme-dark .friends .user .buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.theme-dark .friends .user .buttons button {
+  border: none;
+  padding: 5px;
+  color: white;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.theme-dark .friends .user .buttons button:only-child {
+  background-color: #5271ff;
+}
+.theme-dark .friends .invites {
+  height: 200px;
+  display: flex;
+  justify-content: space-around;
+  width: auto;
+  flex-wrap: wrap;
+  flex-direction: column;
+  overflow-x: scroll;
+}
+.theme-dark .friends .invites .invite {
+  width: 140px;
+}
+.theme-dark .friends .invites .invite .user {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  row-gap: 20px;
+  flex-direction: column;
+}
+.theme-dark .friends .invites .invite .user .buttons {
+  flex-direction: column;
+}
+.theme-dark .friends .invites .invite .user .buttons button {
+  color: white;
+}
+.theme-dark .friends .invites .invite .user .buttons :first-child {
+  background-color: green;
+}
+.theme-dark .friends .invites .invite .user .buttons :nth-child(2) {
+  background-color: red;
+}/*# sourceMappingURL=friends.css.map */

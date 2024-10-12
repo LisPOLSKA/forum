@@ -1,20 +1,14 @@
 import { useContext, useState } from "react";
 import "./comments.scss"
-import { AuthContext } from "../../context/authContext";
-import { useQuery, useMutation, useQueryClient } from "react-query";
+import { AuthProvider } from "../../context/AuthContext";
+import { useMutation, useQueryClient } from "react-query";
 import { makeRequest } from "../../axios";
 import moment from 'moment';
 
-const Comments = ({postId}) => {
+const Comments = ({data},{postId}) => {
   const [desc, setDesc] = useState("");
 
-  const {currentUser} = useContext(AuthContext);
-  
-  const { isLoading, error, data } = useQuery(["comments"], () =>
-    makeRequest.get("/comments?postId="+postId).then((res)=>{
-      return res.data;
-    })
-  );
+  const {currentUser} = useContext(AuthProvider);
 
   const queryClient = useQueryClient()
 
@@ -35,15 +29,13 @@ const Comments = ({postId}) => {
   return (
     <div className="comments">
         <div className="write">
-            <img src={currentUser.profilePic} alt="" />
+            <img src={"/upload/"+currentUser.profilePic} alt="" />
             <input type="text" placeholder="Napisz komentarz" onChange={e=>setDesc(e.target.value)} value={desc}/>
             <button onClick={handleClick}>Wyślij</button>
         </div>
-        {isLoading
-        ? "loading"
-        : data.map(comment=>(
+        {data.map(comment=>(
             <div className="comment" key={comment.id}>
-                <img src={comment.profilePic} alt="" />
+                <img src={"/upload/"+comment.profilePic} alt="" />
                 <div className="info">
                     <span>{comment.username}</span>
                     <p>{comment.desc}</p>

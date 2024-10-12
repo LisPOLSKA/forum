@@ -13,80 +13,113 @@ import Tutorials from "../../assets/11.png";
 import Courses from "../../assets/12.png";
 import Fund from "../../assets/13.png";
 import { useContext } from "react";
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 
 const LeftBar = () => {
 
-  const {currentUser} = useContext(AuthContext);
+  const { currentUser } = useAuth();
 
   return( 
   <div className="leftBar">
     <div className="container">
       <div className="menu">
         <div className="user">
-          <img src={"/upload/"+currentUser.profilePic} alt=""/>
-          <Link to={`/profile/${currentUser.id}`} style={{textDecoration:"none", color:"inherit"}}><span>{currentUser.username}</span></Link>
+          <Link to={`/profile/${currentUser.uid}`} style={{textDecoration:"none", color:"inherit"}}>
+            <img 
+                src={currentUser?.photoURL} // URL do zdjęcia profilowego (jeśli nie ma, to default)
+                alt="profilePic"
+                className="profilePic"
+                referrerpolicy="no-referrer"
+              />
+            <span>{currentUser.displayName}</span>
+          </Link>
         </div>
         <div className="item">
-          <img src={Friends} alt="" />
-          <span>Znajomi</span>
+          <Link to={`/friends`} style={{textDecoration:"none", color:"inherit"}}>
+            <img src={Friends} alt="" />
+            <span>Znajomi</span>
+          </Link>
         </div>
         <div className="item">
-          <img src={Groups} alt="" />
-          <span>Grupy</span>
+          <Link to={`/`} style={{textDecoration:"none", color:"inherit"}}>
+            <img src={Groups} alt="" />
+            <span>Grupy</span>
+          </Link>
         </div>
         <div className="item">
-          <img src={Market} alt="" />
-          <span>Marketplace</span>
+          <Link to={`/`} style={{textDecoration:"none", color:"inherit"}}>
+            <img src={Market} alt="" />
+            <span>Marketplace</span>
+          </Link>
         </div>
         <div className="item">
-          <img src={Watch} alt="" />
-          <span>Oglądaj</span>
+          <Link to={`/`} style={{textDecoration:"none", color:"inherit"}}>
+            <img src={Watch} alt="" />
+            <span>Oglądaj</span>
+          </Link>
         </div>
         <div className="item">
-          <img src={Memories} alt="" />
-          <span>Wspomnienia</span>
+          <Link to={`/`} style={{textDecoration:"none", color:"inherit"}}>
+            <img src={Memories} alt="" />
+            <span>Wspomnienia</span>
+          </Link>
         </div>
       </div>
       <hr/>
       <div className="menu">
         <span>Twoje skróty</span>
         <div className="item">
-          <img src={Events} alt="" />
-          <span>Wydarzenia</span>
+          <Link to={`/`} style={{textDecoration:"none", color:"inherit"}}>
+            <img src={Events} alt="" />
+            <span>Wydarzenia</span>
+          </Link>
         </div>
         <div className="item">
-          <img src={Gaming} alt="" />
-          <span>Gry</span>
+          <Link to={`/`} style={{textDecoration:"none", color:"inherit"}}>
+            <img src={Gaming} alt="" />
+            <span>Gry</span>
+          </Link>
         </div>
         <div className="item">
-          <img src={Gallery} alt="" />
-          <span>Galeria</span>
+          <Link to={`/`} style={{textDecoration:"none", color:"inherit"}}>
+            <img src={Gallery} alt="" />
+            <span>Galeria</span>
+          </Link>
         </div>
         <div className="item">
-          <img src={Videos} alt="" />
-          <span>Filmy</span>
+          <Link to={`/`} style={{textDecoration:"none", color:"inherit"}}>
+            <img src={Videos} alt="" />
+            <span>Filmy</span>
+          </Link>
         </div>
         <div className="item">
-          <img src={Messages} alt="" />
-          <span>Wiadomości</span>
+          <Link to={`/`} style={{textDecoration:"none", color:"inherit"}}>
+            <img src={Messages} alt="" />
+            <span>Wiadomości</span>
+          </Link>
         </div>
       </div>
       <hr />
       <div className="menu">
         <span>Inne</span>
         <div className="item">
-          <img src={Fund} alt="" />
-          <span>Zbiórki pieniędzy</span>
+          <Link to={`/`} style={{textDecoration:"none", color:"inherit"}}>
+            <img src={Fund} alt="" />
+            <span>Zbiórki pieniędzy</span>
+          </Link>
         </div>
         <div className="item">
-          <img src={Tutorials} alt="" />
-          <span>Tutorials</span>
+          <Link to={`/`} style={{textDecoration:"none", color:"inherit"}}>
+            <img src={Tutorials} alt="" />
+            <span>Tutorials</span>
+          </Link>
         </div>
         <div className="item">
-          <img src={Courses} alt="" />
-          <span>Kursy</span>
+          <Link to={`/`} style={{textDecoration:"none", color:"inherit"}}>
+            <img src={Courses} alt="" />
+            <span>Kursy</span>
+          </Link>
         </div>
       </div>
     </div>
