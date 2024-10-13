@@ -18,55 +18,65 @@ const Post = ({ post }) => {
     const [userData, setUserData] = useState(null);
     const { currentUser } = useAuth();
 
-    console.log("Rendering Post Component. Post data:", post); // Logowanie danych posta
-
+    // Fetch likes for the post
     const { isLoading: likesLoading, data: likesData = [] } = useQuery(["likes", post.id], () => {
-        console.log("Fetching likes for post ID:", post.id); // Logowanie ID posta
-        return makeRequest.get("/likes?postId=" + post.id).then((res) => {
-            return res.data;
-        });
+        return makeRequest.get("/likes?postId=" + post.id).then((res) => res.data);
     });
 
     const queryClient = useQueryClient();
 
-    const mutation = useMutation((liked) => {
-        console.log("Mutating like status. Liked:", liked); // Logowanie statusu polubienia
-        if (liked) return makeRequest.delete("/likes?postId=" + post.id);
-        return makeRequest.post("/likes", { postId: post.id });
+    // Mutation to add or remove like
+    const mutation = useMutation(({ liked, userId, postId }) => {
+        if (liked) return makeRequest.delete(`/likes?postId=${postId}`);
+        return makeRequest.post("/likes", { postId, userId });
     }, {
         onSuccess: () => {
-            console.log("Like mutation successful. Invalidating likes query.");
             queryClient.invalidateQueries(["likes"]);
         },
     });
 
-    const deleteMutation = useMutation((postId) => {
-        console.log("Deleting post with ID:", postId); // Logowanie ID posta do usunięcia
-        return makeRequest.delete("/posts/" + postId);
+    // Mutation to delete a post
+    const deleteMutation = useMutation(({ userId, postId }) => {
+        return makeRequest.delete("/likes", { data: { userId, postId } }); // Ensure to send userId and postId in the body
     }, {
         onSuccess: () => {
-            console.log("Post deletion successful. Invalidating posts query.");
-            queryClient.invalidateQueries(["posts"]);
+            queryClient.invalidateQueries(["likes"]); // Refresh likes after deletion
         },
     });
+    
 
     const handleLike = () => {
-        console.log("Handling like. Current user ID:", currentUser.uid); // Logowanie ID aktualnego użytkownika
-        mutation.mutate(likesData.includes(currentUser.uid));
+        const liked = likesData.includes(currentUser.uid);
+        console.log("Liked:", liked, "Post ID:", post.id); // Debug log to check if `liked` is detected properly
+        console.log("Current Likes Data:", likesData); // Log current likes data
+        console.log("Current User ID:", currentUser.uid); // Log current user ID
+    
+        if (liked) {
+            deleteMutation.mutate({
+                userId: currentUser.uid,
+                postId: post.id
+            });
+        } else {
+            mutation.mutate({
+                liked,
+                userId: currentUser.uid,
+                postId: post.id
+            });
+        }
     };
+    
+    
 
     const handleDelete = () => {
         deleteMutation.mutate(post.id);
     };
 
-    // Funkcja do pobierania danych użytkownika
+    // Fetch user data based on userId
     useEffect(() => {
         const fetchUserData = async (uid) => {
-            console.log("Fetching user data for UID:", uid); // Logowanie UID użytkownika
             try {
                 const response = await makeRequest.get(`/user/${uid}`);
                 setUserData(response.data);
-                console.log("User data fetched successfully:", response.data); // Logowanie danych użytkownika
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
@@ -78,10 +88,7 @@ const Post = ({ post }) => {
     }, [post.userId]);
 
     const { isLoading: cIsLoading, data: cData } = useQuery(["comments", post.id], () => {
-        console.log("Fetching comments for post ID:", post.id); // Logowanie ID posta przy pobieraniu komentarzy
-        return makeRequest.get("/comments?postId=" + post.id).then((res) => {
-            return res.data;
-        });
+        return makeRequest.get("/comments?postId=" + post.id).then((res) => res.data);
     });
 
     return (
@@ -99,14 +106,10 @@ const Post = ({ post }) => {
                     </div>
                     <div className="menuContainer">
                         <MoreHorizIcon 
-                            onClick={() => {
-                                setMenuOpen((prev) => !prev);
-                                console.log("Menu toggled. Current state:", !menuOpen); 
-                            }} 
+                            onClick={() => setMenuOpen((prev) => !prev)} 
                         />
                         {menuOpen && post.userId === currentUser.uid && (
                             <div className="menu">
-                                {console.log("Menu is open. Current user ID:", currentUser.uid, "Post user ID:", post.userId)}
                                 <button onClick={handleDelete}>Delete</button>
                             </div>
                         )}
@@ -116,10 +119,8 @@ const Post = ({ post }) => {
                     <p>{post.desc}</p>
                     {post.img && (
                         <img 
-                            src={`/upload/${post.img}`}  // Zmiana ścieżki
+                            src={`/upload/${post.img}`}  
                             alt="" 
-                            onLoad={() => console.log("Image loaded")} 
-                            onError={() => console.error("Image failed to load")} 
                         />
                     )}
                 </div>
@@ -136,7 +137,7 @@ const Post = ({ post }) => {
                     </div>
                     <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
                         <TextsmsOutlinedIcon />
-                        {cIsLoading ? "loading" : cData.length} komentarzy
+                        {cIsLoading ? "loading" : cData.length} Comments
                     </div>
                     <div className="item">
                         <ShareOutlinedIcon />

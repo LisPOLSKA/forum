@@ -20,13 +20,14 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
   next();
 });
-app.use(express.json());
+
 app.use(
   cors({
     origin: "http://localhost:3000",
     credentials: true, // Umożliwienie przesyłania ciasteczek i nagłówków autoryzacji
   })
 );
+app.use(express.json());
 app.use(cookieParser());
 
 // Konfiguracja multer (upload plików) z obsługą dynamicznego tworzenia katalogu

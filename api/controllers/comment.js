@@ -1,10 +1,8 @@
 import { db } from "../connect.js";
-import jwt from "jsonwebtoken";
 import moment from "moment";
 
 // Pobranie komentarzy
 export const getComments = (req, res) => {
-    // Nie używamy już tabeli `users`, więc zapytanie zostało uproszczone
     const q = `SELECT c.*, c.userId
                FROM comments AS c 
                WHERE c.postId = ? 
@@ -18,25 +16,21 @@ export const getComments = (req, res) => {
 
 // Dodanie komentarza
 export const addComment = (req, res) => {
-    const token = req.cookies.accessToken;
-    if (!token) return res.status(401).json("Not logged in!");
+    const { userId, desc, postId } = req.body; // Pobieranie userId z body
 
-    // Użycie tokenu JWT do uwierzytelnienia użytkownika
-    jwt.verify(token, "secretkey", (err, userInfo) => {
-        if (err) return res.status(403).json("Token is not valid!");
+    if (!userId) return res.status(400).json("User ID is required."); // Sprawdzenie, czy userId jest podane
+    if (!postId || !desc) return res.status(400).json("Post ID and description are required."); // Sprawdzenie innych wymaganych danych
 
-        // Firebase Authentication identyfikuje użytkownika za pomocą userInfo.uid
-        const q = "INSERT INTO comments (`desc`, `createdAt`, `userId`, `postId`) VALUES (?)";
-        const values = [
-            req.body.desc,
-            moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"), // Formatowanie daty
-            userInfo.uid, // Używamy userInfo.uid, aby uzyskać userId z Firebase
-            req.body.postId
-        ];
+    const q = "INSERT INTO comments (`desc`, `createdAt`, `userId`, `postId`) VALUES (?)";
+    const values = [
+        desc,
+        moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+        userId, // Użycie userId z body
+        postId
+    ];
 
-        db.query(q, [values], (err, data) => {
-            if (err) return res.status(500).json(err);
-            return res.status(200).json("Comment has been created");
-        });
+    db.query(q, [values], (err, data) => {
+        if (err) return res.status(500).json(err);
+        return res.status(200).json("Comment has been created");
     });
 };
