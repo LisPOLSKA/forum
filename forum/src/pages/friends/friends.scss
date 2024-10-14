@@ -1,95 +1,129 @@
-@import "../../style.scss";
-.friends{
-    @include themify($themes){
+@import "../../style.scss"; // Ensure this imports the theme variables correctly
+
+.friends {
+    @include themify($themes) {
         background-color: themed("bgSoft");
         padding: 20px 70px;
         min-height: 100vh;
-        @include mobile{
+
+        @include mobile {
             padding: 10px;
         }
-        @include tablet{
+
+        @include tablet {
             padding: 20px;
         }
-    .user{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin: 20px 0;
-        .userInfo{
+
+        .header {
+            color: themed("textColor"); // Default text color based on theme
+            font-size: 1.5rem; // Adjust the font size for better visibility
+            margin-bottom: 20px; // Add some space below the header
+        }
+
+        .user {
             display: flex;
             align-items: center;
-            gap: 0px;
-            position: relative;
-            flex-direction: column;
-            img{
-                height: 40px;
-                width: 40px;
-                border-radius: 50%;
-                object-fit: cover;
-            }
-            .online{
-                width: 12px;
-                height: 12px;
-                border-radius: 50%;
-                background-color: limegreen;
-                position: absolute;
-                top: 0;
-                left: 30px;
-            }
-            p{
-                color:themed("textColorSoft");
-            }
-            span{
-                font-weight: 500;
-                color: themed("textColor");
-            }
-        }
-        .buttons{
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            button{
-                border: none;
-                padding: 5px;
-                color: white;
-                cursor: pointer;
-                border-radius: 3px;
-                &:only-child{
-                    background-color: #5271ff;
-                }
-            }
-        }
-    }
-    .invites{
-        height: 200px;
-        display: flex;
-        justify-content: space-around;
-        width: auto;
-        flex-wrap: wrap;
-        flex-direction: column;
-        overflow-x: scroll;
-        .invite{
-            width: 140px;
-            .user{
+            justify-content: space-between;
+            margin: 20px 0;
+
+            .userInfo, a {
                 display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                row-gap: 20px;
+                align-items: center;
+                gap: 0;
+                position: relative;
                 flex-direction: column;
-                .buttons{
-                    flex-direction: column;
-                    button{
-                        color: white;
-                    }
-                    :first-child{
-                        background-color: green;
-                    }
-                    :nth-child(2){
-                        background-color: red;
+
+                img {
+                    height: 40px;
+                    width: 40px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+                .online {
+                    width: 12px;
+                    height: 12px;
+                    border-radius: 50%;
+                    background-color: limegreen;
+                    position: absolute;
+                    top: 0;
+                    left: 30px;
+                }
+
+                p {
+                    color: themed("textColorSoft");
+                }
+
+                span {
+                    font-weight: 500;
+                    color: themed("textColor");
+                }
+            }
+
+            .buttons {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                button {
+                    border: none;
+                    padding: 5px;
+                    color: white;
+                    cursor: pointer;
+                    border-radius: 3px;
+
+                    &:only-child {
+                        background-color: #5271ff; // Default button color
                     }
                 }
             }
         }
+
+        .invites {
+            height: 200px;
+            display: flex;
+            justify-content: space-around;
+            width: auto;
+            flex-wrap: wrap;
+            flex-direction: column;
+            overflow-x: scroll;
+
+            .invite {
+                width: 140px;
+
+                .user {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                    row-gap: 20px;
+                    flex-direction: column;
+
+                    .buttons {
+                        flex-direction: column;
+
+                        button {
+                            color: white;
+
+                            &:first-child {
+                                background-color: green; // Accept button
+                            }
+
+                            &:nth-child(2) {
+                                background-color: red; // Reject button
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .suggestions {
+            margin-top: 20px; // Add some margin for better spacing
+            color: themed("textColor"); // Ensure text is colored based on the theme
+
+            .suggest {
+                // Additional styles for suggestions if needed
+            }
+        }
     }
-}
 }

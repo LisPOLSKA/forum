@@ -11,28 +11,31 @@ export const getPosts = (req, res) => {
     if (requestedUserId) {
         // Gdy podano userId, pobierz posty tylko dla tego użytkownika
         q = `
-            SELECT p.desc, p.id, p.img, p.category, p.userId
+            SELECT p.desc, p.id, p.img, p.category, p.userId, p.createdAt
             FROM posts p
             WHERE p.userId = ?
+            ORDER BY p.createdAt DESC
         `;
         values = [requestedUserId];
     } else if (friends) {
         // Zapytanie do pobrania postów od znajomych
         q = `
-            SELECT p.desc, p.id, p.img, p.category, p.userId
+            SELECT p.desc, p.id, p.img, p.category, p.userId, p.createdAt
             FROM posts p
             JOIN relationships r ON (p.userId = r.userId1 OR p.userId = r.userId2)
             WHERE (r.userId1 = ? OR r.userId2 = ?)
             AND r.status = 'accept'
             AND p.userId != ?
+            ORDER BY p.createdAt DESC
         `;
         values = [userId, userId, userId];
     } else {
         // Gdy nie podano userId ani friends, można zwrócić wszystkie posty (lub dostosować zgodnie z wymaganiami)
         q = `
-            SELECT p.desc, p.id, p.img, p.category, p.userId
+            SELECT p.desc, p.id, p.img, p.category, p.userId, p.createdAt
             FROM posts p
             WHERE p.userId = ?
+            ORDER BY p.createdAt DESC
         `;
         values = [userId];
     }
@@ -42,6 +45,7 @@ export const getPosts = (req, res) => {
         return res.status(200).json(data);
     });
 };
+
 
 export const addPost = (req, res) => {
     const userId = req.user.uid;

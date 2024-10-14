@@ -70,7 +70,9 @@ const Post = ({ post }) => {
     const handleDelete = () => {
         deleteMutation.mutate(post.id);
     };
-
+    const handleEdit = () => {
+        console.log("spierdalaj nie ma edycji");
+    }
     // Fetch user data based on userId
     useEffect(() => {
         const fetchUserData = async (uid) => {
@@ -96,21 +98,24 @@ const Post = ({ post }) => {
             <div className="container">
                 <div className="user">
                     <div className="userInfo">
-                        <img src={userData?.photoURL || "/defaultProfile.png"} alt="User" />
+                        <img src={userData?.photoURL || "/defaultProfile.png"} alt="User" referrerpolicy="no-referrer"/>
                         <div className="details">
                             <Link to={`/profile/${post.userId}`} style={{ textDecoration: "none", color: "inherit" }}>
                                 <span className="name">{userData?.displayName || "Loading..."}</span>
                             </Link>
+                            {console.log(post.createdAt)}
                             <span className="date">{moment(post.createdAt).fromNow()}</span>
                         </div>
                     </div>
                     <div className="menuContainer">
                         <MoreHorizIcon 
                             onClick={() => setMenuOpen((prev) => !prev)} 
+                            className="menuCollapse"
                         />
                         {menuOpen && post.userId === currentUser.uid && (
                             <div className="menu">
                                 <button onClick={handleDelete}>Delete</button>
+                                <button onClick={handleEdit} className="edit">Edit</button>
                             </div>
                         )}
                     </div>

@@ -33,7 +33,8 @@ const Update = ({ setOpenUpdate, user }) => {
         try {
             const storageRef = ref(storage, `${path}/${file.name}`); // Create a storage reference
             const uploadTask = uploadBytesResumable(storageRef, file); // Upload the file
-            const downloadURL = await getDownloadURL(await uploadTask); // Get the file's download URL
+            const snapshot = await uploadTask; // Wait for upload to finish
+            const downloadURL = await getDownloadURL(snapshot.ref); // Get the file's download URL
             console.log(`File uploaded successfully. Download URL: ${downloadURL}`); // Debugging line
             return downloadURL;
         } catch (err) {
@@ -48,9 +49,10 @@ const Update = ({ setOpenUpdate, user }) => {
         try {
             // Upload files to Firebase and get URLs
             const coverUrl = cover ? await uploadFileToFirebase(cover, "covers") : user.coverPic || null;
+            console.log("Cover upload response:", coverUrl); // Log response from cover upload
+
             const profileUrl = profile ? await uploadFileToFirebase(profile, "profiles") : user.profilePic || null;
-            console.log("Cover URL:", coverUrl); // Debugging line
-            console.log("Profile URL:", profileUrl); // Debugging line
+            console.log("Profile upload response:", profileUrl); // Log response from profile upload
 
             // Prepare updated user data
             const updatedUserData = {

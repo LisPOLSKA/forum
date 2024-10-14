@@ -38,7 +38,7 @@ const Profile = () => {
                     website: response.data.website,
                     city: response.data.city,
                 });
-                console.log(user)
+                console.log(currentUser)
             } catch (error) {
                 console.error("Error fetching user data:", error);
             } finally {

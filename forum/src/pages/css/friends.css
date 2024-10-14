@@ -13,27 +13,32 @@
     padding: 20px;
   }
 }
+.theme-light .friends .header {
+  color: #000;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
 .theme-light .friends .user {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 20px 0;
 }
-.theme-light .friends .user .userInfo {
+.theme-light .friends .user .userInfo, .theme-light .friends .user a {
   display: flex;
   align-items: center;
-  gap: 0px;
+  gap: 0;
   position: relative;
   flex-direction: column;
 }
-.theme-light .friends .user .userInfo img {
+.theme-light .friends .user .userInfo img, .theme-light .friends .user a img {
   height: 40px;
   width: 40px;
   border-radius: 50%;
   -o-object-fit: cover;
      object-fit: cover;
 }
-.theme-light .friends .user .userInfo .online {
+.theme-light .friends .user .userInfo .online, .theme-light .friends .user a .online {
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -42,10 +47,10 @@
   top: 0;
   left: 30px;
 }
-.theme-light .friends .user .userInfo p {
+.theme-light .friends .user .userInfo p, .theme-light .friends .user a p {
   color: #555;
 }
-.theme-light .friends .user .userInfo span {
+.theme-light .friends .user .userInfo span, .theme-light .friends .user a span {
   font-weight: 500;
   color: #000;
 }
@@ -89,11 +94,15 @@
 .theme-light .friends .invites .invite .user .buttons button {
   color: white;
 }
-.theme-light .friends .invites .invite .user .buttons :first-child {
+.theme-light .friends .invites .invite .user .buttons button:first-child {
   background-color: green;
 }
-.theme-light .friends .invites .invite .user .buttons :nth-child(2) {
+.theme-light .friends .invites .invite .user .buttons button:nth-child(2) {
   background-color: red;
+}
+.theme-light .friends .suggestions {
+  margin-top: 20px;
+  color: #000;
 }
 .theme-dark .friends {
   background-color: #333;
@@ -110,27 +119,32 @@
     padding: 20px;
   }
 }
+.theme-dark .friends .header {
+  color: whitesmoke;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
 .theme-dark .friends .user {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 20px 0;
 }
-.theme-dark .friends .user .userInfo {
+.theme-dark .friends .user .userInfo, .theme-dark .friends .user a {
   display: flex;
   align-items: center;
-  gap: 0px;
+  gap: 0;
   position: relative;
   flex-direction: column;
 }
-.theme-dark .friends .user .userInfo img {
+.theme-dark .friends .user .userInfo img, .theme-dark .friends .user a img {
   height: 40px;
   width: 40px;
   border-radius: 50%;
   -o-object-fit: cover;
      object-fit: cover;
 }
-.theme-dark .friends .user .userInfo .online {
+.theme-dark .friends .user .userInfo .online, .theme-dark .friends .user a .online {
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -139,10 +153,10 @@
   top: 0;
   left: 30px;
 }
-.theme-dark .friends .user .userInfo p {
+.theme-dark .friends .user .userInfo p, .theme-dark .friends .user a p {
   color: lightgray;
 }
-.theme-dark .friends .user .userInfo span {
+.theme-dark .friends .user .userInfo span, .theme-dark .friends .user a span {
   font-weight: 500;
   color: whitesmoke;
 }
@@ -186,9 +200,13 @@
 .theme-dark .friends .invites .invite .user .buttons button {
   color: white;
 }
-.theme-dark .friends .invites .invite .user .buttons :first-child {
+.theme-dark .friends .invites .invite .user .buttons button:first-child {
   background-color: green;
 }
-.theme-dark .friends .invites .invite .user .buttons :nth-child(2) {
+.theme-dark .friends .invites .invite .user .buttons button:nth-child(2) {
   background-color: red;
+}
+.theme-dark .friends .suggestions {
+  margin-top: 20px;
+  color: whitesmoke;
 }/*# sourceMappingURL=friends.css.map */

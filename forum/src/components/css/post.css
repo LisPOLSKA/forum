@@ -34,18 +34,40 @@
 .theme-light .post .container .user .userInfo .details .date {
   font-size: 12px;
 }
-.theme-light .post .container .user button {
+.theme-light .post .container .user .menuCollapse {
+  cursor: pointer;
+}
+.theme-light .post .container .user .menu {
+  padding: 10px 20px;
+  background-color: white;
+  border: 1px solid rgb(185, 171, 171);
+  box-shadow: 3px 8px 24px -6px rgba(66, 68, 90, 0.91);
   position: absolute;
   top: 30px;
   right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  flex-direction: column;
+  gap: 5px;
+}
+.theme-light .post .container .user .menu button {
   border: none;
   background-color: #f0544f;
   padding: 5px;
   cursor: pointer;
   color: white;
+  width: 100%;
 }
-.theme-light .post .container .user button:hover {
+.theme-light .post .container .user .menu button:hover {
   background-color: #d0433b;
+}
+.theme-light .post .container .user .menu button.edit {
+  background-color: rgb(66, 66, 218);
+}
+.theme-light .post .container .user .menu button.edit:hover {
+  background-color: rgb(26, 26, 157);
 }
 .theme-light .post .container .content {
   margin: 20px 0px;
@@ -56,6 +78,7 @@
   -o-object-fit: cover;
      object-fit: cover;
   margin-top: 20px;
+  border-radius: 10px;
 }
 .theme-light .post .container .info {
   display: flex;
@@ -105,18 +128,40 @@
 .theme-dark .post .container .user .userInfo .details .date {
   font-size: 12px;
 }
-.theme-dark .post .container .user button {
+.theme-dark .post .container .user .menuCollapse {
+  cursor: pointer;
+}
+.theme-dark .post .container .user .menu {
+  padding: 10px 20px;
+  background-color: white;
+  border: 1px solid rgb(185, 171, 171);
+  box-shadow: 3px 8px 24px -6px rgba(66, 68, 90, 0.91);
   position: absolute;
   top: 30px;
   right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  flex-direction: column;
+  gap: 5px;
+}
+.theme-dark .post .container .user .menu button {
   border: none;
   background-color: #f0544f;
   padding: 5px;
   cursor: pointer;
   color: white;
+  width: 100%;
 }
-.theme-dark .post .container .user button:hover {
+.theme-dark .post .container .user .menu button:hover {
   background-color: #d0433b;
+}
+.theme-dark .post .container .user .menu button.edit {
+  background-color: rgb(66, 66, 218);
+}
+.theme-dark .post .container .user .menu button.edit:hover {
+  background-color: rgb(26, 26, 157);
 }
 .theme-dark .post .container .content {
   margin: 20px 0px;
@@ -127,6 +172,7 @@
   -o-object-fit: cover;
      object-fit: cover;
   margin-top: 20px;
+  border-radius: 10px;
 }
 .theme-dark .post .container .info {
   display: flex;

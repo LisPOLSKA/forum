@@ -36,20 +36,20 @@
   justify-content: space-between;
   margin: 20px 0;
 }
-.theme-light .rightBar .container .item .user .userInfo {
+.theme-light .rightBar .container .item .user .userInfo, .theme-light .rightBar .container .item .user a {
   display: flex;
   align-items: center;
   gap: 20px;
   position: relative;
 }
-.theme-light .rightBar .container .item .user .userInfo img {
+.theme-light .rightBar .container .item .user .userInfo img, .theme-light .rightBar .container .item .user a img {
   height: 40px;
   width: 40px;
   border-radius: 50%;
   -o-object-fit: cover;
      object-fit: cover;
 }
-.theme-light .rightBar .container .item .user .userInfo .online {
+.theme-light .rightBar .container .item .user .userInfo .online, .theme-light .rightBar .container .item .user a .online {
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -58,10 +58,33 @@
   top: 0;
   left: 30px;
 }
-.theme-light .rightBar .container .item .user .userInfo p {
+.theme-light .rightBar .container .item .user .userInfo p, .theme-light .rightBar .container .item .user a p {
   color: #555;
 }
-.theme-light .rightBar .container .item .user .userInfo span {
+.theme-light .rightBar .container .item .user .userInfo span, .theme-light .rightBar .container .item .user a span {
+  font-weight: 500;
+  color: #000;
+}
+.theme-light .rightBar .container .item .user .userInfo a img, .theme-light .rightBar .container .item .user a a img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.theme-light .rightBar .container .item .user .userInfo a .online, .theme-light .rightBar .container .item .user a a .online {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: limegreen;
+  position: absolute;
+  top: 0;
+  left: 30px;
+}
+.theme-light .rightBar .container .item .user .userInfo a p, .theme-light .rightBar .container .item .user a a p {
+  color: #555;
+}
+.theme-light .rightBar .container .item .user .userInfo a span, .theme-light .rightBar .container .item .user a a span {
   font-weight: 500;
   color: #000;
 }
@@ -133,20 +156,20 @@
   justify-content: space-between;
   margin: 20px 0;
 }
-.theme-dark .rightBar .container .item .user .userInfo {
+.theme-dark .rightBar .container .item .user .userInfo, .theme-dark .rightBar .container .item .user a {
   display: flex;
   align-items: center;
   gap: 20px;
   position: relative;
 }
-.theme-dark .rightBar .container .item .user .userInfo img {
+.theme-dark .rightBar .container .item .user .userInfo img, .theme-dark .rightBar .container .item .user a img {
   height: 40px;
   width: 40px;
   border-radius: 50%;
   -o-object-fit: cover;
      object-fit: cover;
 }
-.theme-dark .rightBar .container .item .user .userInfo .online {
+.theme-dark .rightBar .container .item .user .userInfo .online, .theme-dark .rightBar .container .item .user a .online {
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -155,10 +178,33 @@
   top: 0;
   left: 30px;
 }
-.theme-dark .rightBar .container .item .user .userInfo p {
+.theme-dark .rightBar .container .item .user .userInfo p, .theme-dark .rightBar .container .item .user a p {
   color: lightgray;
 }
-.theme-dark .rightBar .container .item .user .userInfo span {
+.theme-dark .rightBar .container .item .user .userInfo span, .theme-dark .rightBar .container .item .user a span {
+  font-weight: 500;
+  color: whitesmoke;
+}
+.theme-dark .rightBar .container .item .user .userInfo a img, .theme-dark .rightBar .container .item .user a a img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.theme-dark .rightBar .container .item .user .userInfo a .online, .theme-dark .rightBar .container .item .user a a .online {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: limegreen;
+  position: absolute;
+  top: 0;
+  left: 30px;
+}
+.theme-dark .rightBar .container .item .user .userInfo a p, .theme-dark .rightBar .container .item .user a a p {
+  color: lightgray;
+}
+.theme-dark .rightBar .container .item .user .userInfo a span, .theme-dark .rightBar .container .item .user a a span {
   font-weight: 500;
   color: whitesmoke;
 }

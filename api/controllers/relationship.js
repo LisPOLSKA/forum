@@ -39,7 +39,7 @@ export const addRelationship = (req, res) => {
 // Usunięcie znajomości
 export const deleteRelationship = (req, res) => {
     const userId = req.body.userId; // ID użytkownika do usunięcia znajomości
-    const currentUserId = req.user.uid; // Pobranie userId z Firebase Authentication
+    const currentUserId = req.body.uid;
 
     if (!userId) return res.status(400).json("User ID is required");
 
@@ -58,24 +58,69 @@ export const deleteRelationship = (req, res) => {
 export const getSuggestions = (req, res) => {
     const userId = req.user.uid; // Pobranie userId z Firebase Authentication
 
-    // Pobieranie sugestii bez korzystania z tabeli `users`, ponieważ dane użytkowników są w Firebase
+    // Zaktualizowane zapytanie SQL do bazy danych
     const q = `
-        SELECT DISTINCT r1.userId2 AS suggestedUserId
-        FROM relationships AS r1
-        JOIN relationships AS r2 ON r1.userId1 = r2.userId2
-        LEFT JOIN relationships AS r ON (r1.userId2 = r.userId1 OR r1.userId2 = r.userId2)
-        WHERE (r1.userId1 = ? OR r2.userId1 = ?)
-        AND r.id IS NULL 
-        AND r1.userId2 != ? 
-        AND r1.status = 'accept'
-        AND r2.status = 'accept'
+        -- Krok 1: Znalezienie bezpośrednich znajomych użytkownika
+        WITH direct_friends AS (
+            SELECT 
+                CASE 
+                    WHEN r.userId1 = ? THEN r.userId2
+                    ELSE r.userId1
+                END AS friend
+            FROM relationships r
+            WHERE 
+                (r.userId1 = ? OR r.userId2 = ?)
+                AND r.status = 'accept'
+        )
+
+        -- Krok 2: Znalezienie potencjalnych znajomych (znajomych znajomych), wykluczając samego użytkownika
+        SELECT DISTINCT 
+            CASE 
+                WHEN r.userId1 = df.friend THEN r.userId2
+                ELSE r.userId1
+            END AS potential_friend
+        FROM direct_friends df
+        JOIN relationships r ON (r.userId1 = df.friend OR r.userId2 = df.friend)
+        WHERE 
+            r.status = 'accept'
+            AND (r.userId1 != ? AND r.userId2 != ?)
+            AND NOT EXISTS (
+                SELECT 1
+                FROM relationships rel_check
+                WHERE 
+                    (
+                        (rel_check.userId1 = 
+                            CASE 
+                                WHEN r.userId1 = df.friend THEN r.userId2
+                                ELSE r.userId1
+                            END
+                        AND rel_check.userId2 = ?)
+                        OR
+                        (rel_check.userId2 = 
+                            CASE 
+                                WHEN r.userId1 = df.friend THEN r.userId2
+                                ELSE r.userId1
+                            END
+                        AND rel_check.userId1 = ?)
+                    )
+                    AND rel_check.status IN ('pending', 'accept')
+            );
     `;
 
-    db.query(q, [userId, userId, userId], (err, data) => {
-        if (err) return res.status(500).json(err);
-        return res.status(200).json(data); // Lista sugerowanych znajomości
+    // Wykonanie zapytania w bazie danych
+    db.query(q, [userId, userId, userId, userId, userId, userId, userId], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Error fetching suggestions' });
+        }
+
+        // Zwrócenie wyników
+        res.status(200).json(results);
     });
 };
+
+
+
 
 // Pobranie zaproszeń
 export const getInvite = (req, res) => {
@@ -96,8 +141,8 @@ export const getInvite = (req, res) => {
 
 // Akceptacja znajomości
 export const acceptRelationship = (req, res) => {
-    const userId = req.body.userId; // ID użytkownika, który wysłał zaproszenie
-    const currentUserId = req.user.uid; // Pobranie userId z Firebase Authentication
+    const userId = req.body.userId; // ID of the user who sent the invitation
+    const currentUserId = req.user.uid; // Get the current user's ID
 
     if (!userId) return res.status(400).json("User ID is required");
 
@@ -105,11 +150,13 @@ export const acceptRelationship = (req, res) => {
         UPDATE relationships 
         SET status = 'accept' 
         WHERE (userId1 = ? AND userId2 = ?) 
+           OR (userId1 = ? AND userId2 = ?)
         AND status = 'pending'
     `;
 
-    db.query(q, [userId, currentUserId], (err, data) => {
+    db.query(q, [userId, currentUserId, currentUserId, userId], (err, data) => {
         if (err) return res.status(500).json(err);
         return res.status(200).json("Zaproszenie zostało zaakceptowane");
     });
 };
+

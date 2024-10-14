@@ -4,27 +4,27 @@ import jwt from "jsonwebtoken";
 // Function to get user data with filtering options
 export const getUser = async (req, res) => {
     const userId = req.params.userId;
-    let debugInfo = {};  // Zmienna do przechowywania danych debugowania
+    let debugInfo = {};  // Variable to store debugging information
 
     try {
-        const userDoc = await db.collection("users").doc(userId).get(); // Zmiana: dodano await
+        const userDoc = await db.collection("users").doc(userId).get(); // Fetch user document
 
-        if (!userDoc.exists) { // Zmiana: sprawdzamy, czy dokument istnieje
+        if (userDoc.exists) { // Check if the document exists
+            const userData = userDoc.data(); // Get user data
+            debugInfo.fetchedData = userData;  // Add fetched data to debug info
+            const { password, ...info } = userData; // Exclude password
+            return res.json({ info, auth: true, debug: debugInfo }); // Return user data and auth info
+        } else {
             debugInfo.message = "User not found in Firestore.";
-            return res.status(404).json({ message: "User not found", debug: debugInfo });
+            return res.json({ auth: true, debug: debugInfo }); // Return only auth info
         }
-
-        const userData = userDoc.data(); // Pobierz dane użytkownika
-        debugInfo.fetchedData = userData;  // Dodajemy dane użytkownika do debugowania
-        debugInfo.querySnapshot = userData; // Dodaj querySnapshot do debugInfo (możesz dostosować to)
-
-        const { password, ...info } = userData;
-        return res.json({ info, userDoc, debug: debugInfo }); // Zwracamy dane i debugInfo
     } catch (error) {
         debugInfo.error = error.message;
-        return res.status(500).json({ message: "Error fetching user data", debug: debugInfo });
+        return res.status(500).json({ message: "Error fetching user data", debug: debugInfo }); // Handle errors
     }
 };
+
+
 
 
 // Function to update user data

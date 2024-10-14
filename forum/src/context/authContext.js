@@ -9,7 +9,8 @@ import {
   sendPasswordResetEmail, 
   updateProfile, 
   updateEmail, 
-  updatePassword 
+  updatePassword, 
+  signOut // Import signOut for logout
 } from "firebase/auth";
 
 // Tworzymy kontekst autoryzacji
@@ -52,6 +53,19 @@ export function AuthProvider({ children }) {
     } catch (error) {
       console.error('Error during login:', error);
       throw error;
+    }
+  }
+
+  // Funkcja do wylogowywania
+  async function logout() {
+    try {
+      await signOut(auth); // Wyloguj użytkownika
+      setCurrentUser(null); // Ustaw stan użytkownika na null
+      localStorage.removeItem('accessToken'); // Usuń token z localStorage
+      console.log("User logged out successfully");
+    } catch (error) {
+      console.error("Error during logout:", error);
+      throw error; // Opcjonalnie możesz przekazać błąd
     }
   }
 
@@ -139,10 +153,11 @@ export function AuthProvider({ children }) {
     currentUser,
     signup,
     login,
+    logout, // Dodano funkcję wylogowywania
     resetPassword,
-    updateUserProfile, // Dodano aktualizację profilu
-    updateUserEmail,   // Dodano aktualizację e-maila
-    updateUserPassword // Dodano aktualizację hasła
+    updateUserProfile,
+    updateUserEmail,
+    updateUserPassword
   };
 
   return (

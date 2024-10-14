@@ -58,31 +58,29 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 // Endpoint do pobierania danych użytkownika na podstawie uid
 app.get('/api/user/:uid', async (req, res) => {
-  const userId = req.params.uid; // Zmieniono userId na uid
+  const userId = req.params.uid;
 
   try {
-      // Pobierz dane użytkownika z Firestore
-      const userDoc = await db.collection("users").doc(userId).get(); 
+      // Fetch user data from Firestore
+      const userDoc = await db.collection("users").doc(userId).get();
 
-      if (!userDoc.exists) { // Sprawdzamy, czy dokument istnieje
-          return res.status(404).json({ message: "User not found" });
-      }
-
-      const userData = userDoc.data(); // Pobierz dane użytkownika
-
-      // Pobierz dane użytkownika z Firebase Authentication
+      // Fetch user information from Firebase Authentication
       const authUser = await admin.auth().getUser(userId);
       
-      // Zwracamy dane użytkownika
-      return res.json({
-          ...userData,
+      const response = {
+          uid: authUser.uid,
           displayName: authUser.displayName,
           photoURL: authUser.photoURL,
-      });
+          // Include Firestore data if it exists
+          ...(userDoc.exists ? userDoc.data() : {})
+      };
+
+      return res.json(response);
   } catch (error) {
-      return res.status(500).json({ message: "Error fetching user data" });
+      return res.status(500).json({ message: "Error fetching user data", error: error.message });
   }
 });
+
 
 
 

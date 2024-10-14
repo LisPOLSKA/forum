@@ -8,7 +8,7 @@ import Invite from "../invite/Invite";
 
 const RightBar = () => {
   const { currentUser } = useAuth();
-  const userId = parseInt(currentUser.id);
+  const userId = currentUser.uid;
 
   const { isLoading, error, data } = useQuery(["suggestions", userId], () =>
     makeRequest.get("/relationships/suggestions?userId="+userId).then((res)=>{
@@ -31,6 +31,7 @@ const RightBar = () => {
         {isLoading? "loading"
         : data.map(suggestion=>( 
           <div className="suggest" key={suggestion.id}>
+            {console.log(suggestion)}
           <Suggest suggestion={suggestion}/>
           </div>
           ))}
